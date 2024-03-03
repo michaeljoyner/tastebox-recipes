@@ -10,5 +10,7 @@
 </template>
 
 <script lang="ts" setup>
-const { data } = await useFetch("http://localhost/api/free-recipes");
+const config = useRuntimeConfig();
+console.log(config.public.apiBase);
+const { data } = await useFetch(`${config.public.apiBase}/free-recipes`);
 </script>

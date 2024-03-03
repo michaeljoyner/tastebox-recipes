@@ -29,9 +29,10 @@
 
 <script lang="ts" setup>
 const route = useRoute();
+const config = useRuntimeConfig();
 
 const { data } = await useFetch(
-  `http://localhost/api/free-recipes/${route.params.id}`
+  `${config.public.apiBase}/free-recipes/${route.params.id}`
 );
 
 const meal = computed(() => data.value.data);
