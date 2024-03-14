@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen flex flex-col">
+  <div class="min-h-screen flex flex-col bg-slate-100">
     <div class="shadow px-6 h-16 flex items-center justify-between">
       <div>
         <NuxtLink class="flex gap-3 items-center" to="/">

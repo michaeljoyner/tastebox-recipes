@@ -1,41 +1,52 @@
 <template>
-  <div class="max-w-4xl mx-auto pt-8">
-    <div>
-      <h1 class="text-2xl font-display font-bold">TastBox Recipes</h1>
-      <p class="text-lg my-6">
-        Simple and delicious recipes for diverse and wholesome meals.
-      </p>
-    </div>
-    <div class="">
+  <div class="max-w-7xl mx-auto pt-8">
+    <div
+      class="bg-gradient-to-tl to-white from-indigo-200 p-12 rounded-2xl flex justify-between gap-12"
+    >
+      <div class="">
+        <h1 class="text-5xl font-display font-black">
+          TasteBox <br /><span>Recipes</span>
+        </h1>
+        <p class="text-2xl max-w-xl my-6">
+          Delicious, easy to cook recipes for diverse and wholesome meals. Make
+          yourself something special.
+        </p>
+      </div>
+
       <div
-        v-for="meal in data.data"
-        :key="meal.meal_id"
-        class="flex flex-col md:flex-row my-6 shadow rounded-lg overflow-hidden"
+        class="w-80 h-56 p-3 rounded bg-white rotate-6 shadow-[0_2.1rem_2rem_-15px_rgba(0,0,0,0.3)] hidden md:block"
       >
-        <div class="w-full md:w-64 shrink-0 overflow-hidden">
-          <NuxtLink :to="`/meals/${meal.meal_id}`">
-            <img
-              :src="meal.image"
-              class="w-full h-full object-cover hover:scale-105 transition-transform"
-              alt=""
-            />
-          </NuxtLink>
-        </div>
-        <div class="px-4 pb-2 pt-3 md:pt-0 flex flex-col items-start">
-          <div class="flex-1">
-            <NuxtLink
-              class="font-display font-semibold"
-              :to="`/meals/${meal.meal_id}`"
-              ><p>{{ meal.name }}</p></NuxtLink
-            >
-            <p class="text-gray-500 text-sm">{{ meal.description }}</p>
+        <img
+          :src="randomMeal?.image"
+          class="w-full h-full object-cover"
+          alt=""
+        />
+      </div>
+    </div>
+
+    <div class="flex gap-12">
+      <div class="w-80 shrink-0 p-6 bg-white mt-6 rounded-lg hidden md:block">
+        <div>
+          <p class="font-display mb-2">Categories:</p>
+          <div v-for="category in categories">
+            <label class="flex items-center gap-2 mb-2">
+              <input
+                type="checkbox"
+                class="focus:ring-0 text-indigo-500 text-lg"
+                :value="category.id"
+                v-model="selectedCategories"
+              />
+              <span class="text-sm">{{ category.name }}</span>
+            </label>
           </div>
-          <NuxtLink
-            class="text-xs bg-purple-500 hover:bg-purple-600 text-white px-2 py-1 rounded font-semibold mt-4"
-            :to="`/meals/${meal.meal_id}`"
-            >View Recipe</NuxtLink
-          >
         </div>
+      </div>
+      <div class="flex-1">
+        <MealRecipeCard
+          v-for="meal in filteredMeals"
+          :key="meal.meal_id"
+          :meal="meal"
+        />
       </div>
     </div>
   </div>
@@ -45,4 +56,35 @@
 const config = useRuntimeConfig();
 console.log(config.public.apiBase);
 const { data } = await useFetch(`${config.public.apiBase}/free-recipes`);
+
+const meals = computed(() => data.value.data || []);
+
+const filteredMeals = computed(() => {
+  return meals.value.filter((meal) => {
+    if (!selectedCategories.value.length) return true;
+
+    return meal.categories.find((cat) =>
+      selectedCategories.value.includes(cat.id)
+    );
+  });
+});
+const randomMeal = computed(() => {
+  if (!meals.value) return null;
+  return meals.value[Math.floor(Math.random() * meals.value.length)];
+});
+
+const selectedCategories = ref([]);
+
+const categories = computed(() => {
+  if (!meals.value) return [];
+
+  return meals.value.reduce((allCategories, meal) => {
+    meal.categories.forEach((cat) => {
+      if (!allCategories.find((c) => c.id === cat.id)) {
+        allCategories.push(cat);
+      }
+    });
+    return allCategories;
+  }, []);
+});
 </script>
