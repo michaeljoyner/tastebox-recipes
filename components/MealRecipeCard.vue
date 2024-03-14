@@ -11,20 +11,22 @@
         />
       </NuxtLink>
     </div>
-    <div class="px-4 pb-2 pt-3 md:pt-0 flex flex-col items-start">
+    <div class="px-4 pb-2 pt-3 md:pt-2 flex flex-col items-start">
       <div class="flex-1">
         <NuxtLink
-          class="font-display font-semibold"
+          class="font-display font-semibold hover:text-indigo-500"
           :to="`/meals/${meal.meal_id}`"
           ><p>{{ meal.name }}</p></NuxtLink
         >
         <p class="text-gray-500 text-sm">{{ meal.description }}</p>
       </div>
-      <NuxtLink
-        class="text-xs bg-purple-500 hover:bg-purple-600 text-white px-2 py-1 rounded font-semibold mt-4"
-        :to="`/meals/${meal.meal_id}`"
-        >View Recipe</NuxtLink
-      >
+      <div class="flex justify-end w-full">
+        <NuxtLink
+          class="text-xs bg-indigo-500 hover:bg-indigo-600 text-white px-2 py-1 rounded font-semibold mt-4"
+          :to="`/meals/${meal.meal_id}`"
+          >View Recipe</NuxtLink
+        >
+      </div>
     </div>
   </div>
 </template>

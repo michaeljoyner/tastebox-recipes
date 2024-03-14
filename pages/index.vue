@@ -1,7 +1,7 @@
 <template>
   <div class="max-w-7xl mx-auto pt-8">
     <div
-      class="bg-gradient-to-tl to-white from-indigo-200 p-12 rounded-2xl flex justify-between gap-12"
+      class="bg-gradient-to-tl to-white from-indigo-200 p-12 rounded-2xl flex justify-between gap-12 shadow-lg"
     >
       <div class="">
         <h1 class="text-5xl font-display font-black">
@@ -13,15 +13,17 @@
         </p>
       </div>
 
-      <div
-        class="w-80 h-56 p-3 rounded bg-white rotate-6 shadow-[0_2.1rem_2rem_-15px_rgba(0,0,0,0.3)] hidden md:block"
-      >
-        <img
-          :src="randomMeal?.image"
-          class="w-full h-full object-cover"
-          alt=""
-        />
-      </div>
+      <ClientOnly>
+        <div
+          class="w-80 h-56 p-3 rounded bg-white rotate-6 shadow-[0_2.1rem_2rem_-15px_rgba(0,0,0,0.3)] hidden md:block"
+        >
+          <img
+            :src="randomMeal?.image"
+            class="w-full h-full object-cover"
+            alt=""
+          />
+        </div>
+      </ClientOnly>
     </div>
 
     <div class="flex gap-12">
